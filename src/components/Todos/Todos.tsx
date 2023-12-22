@@ -27,7 +27,7 @@ const Todos = () => {
     <div className="todos w-[800px] max-w-full mx-auto">
       {/* Title */}
       <div className="flex w-full items-center justify-between mb-5">
-        <h1 className="text-4xl tracking-widest font-bold uppercase">Todo</h1>
+        <h1 className="text-4xl tracking-widest font-bold uppercase text-white">Todo</h1>
         <ThemeSwitcher/>
       </div>
       
