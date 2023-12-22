@@ -40,7 +40,6 @@ body { height: 100%; }
 
 main { background: var(--light-theme-very-light-gray) url(./assets/images/bg-desktop-light.jpg) no-repeat center top / 1440px auto; }
 @media (max-width: 640px) { main{ background-image: url(./assets/images/bg-mobile-light.jpg); background-size: 100% 200px; }}
-/* @media (min-width: 1441px) { main { background-size: 100% 300px; }} */
 
 main.dark { background-color: var(--dark-theme-very-dark-blue); background-image: url(./assets/images/bg-desktop-dark.jpg); }
-@media (max-width: 640px) { main.dark { background-image: url(./assets/images/bg-mobile-dark.jpg); background-size: 100% 200px; }}
+@media (max-width: 640px) { main.dark { background-image: url(./assets/images/bg-mobile-dark.jpg); }}

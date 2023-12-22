@@ -2,8 +2,8 @@ import Attribution from './components/Attribution'
 //import AgeCalculator from './components/AgeCalculator/AgeCalculator'
 
 const App = () => {
-  const theme = "light";
-  //const theme = "dark";
+  // const theme = "light";
+  const theme = "dark";
 
   return (
     <main className={`${theme} relative min-h-screen pt-[115px] md:pt-[155px] pb-10`}>
