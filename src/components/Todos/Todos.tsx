@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 import './Todos.css';
 
 interface ITodo {
@@ -25,7 +26,10 @@ const Todos = () => {
   return (
     <div className="todos w-[800px] max-w-full mx-auto">
       {/* Title */}
-      <h1 className="text-4xl tracking-widest font-bold uppercase mb-5">Todo</h1>
+      <div className="flex w-full items-center justify-between mb-5">
+        <h1 className="text-4xl tracking-widest font-bold uppercase">Todo</h1>
+        <ThemeSwitcher/>
+      </div>
       
       {/* Form */}
       <div className="mb-5">
