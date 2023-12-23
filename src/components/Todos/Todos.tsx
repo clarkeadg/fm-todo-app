@@ -4,6 +4,8 @@ import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSo
 import uniqid from 'uniqid';
 import SortableItem from './SortableItem';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
+import checkUrl from '../../assets/images/icon-check.svg';
+import crossUrl from '../../assets/images/icon-cross.svg';
 import './Todos.css';
 
 interface ITodo {
@@ -83,7 +85,7 @@ const Todos = () => {
         </form>
       </div>
 
-      {/* Todos List */}
+      {/* List */}
       <div className="todos-list">
         <DndContext 
           sensors={sensors}
@@ -97,12 +99,17 @@ const Todos = () => {
             { items.map((item, index) => {
               return (
                 <SortableItem key={index} id={item.id}>
-                  <div className="todos-item flex w-full items-center justify-between">
-                    <div className="">
-                      {item.title}
+                  <div className="todos-item flex w-full items-center justify-between px-2">
+                    <div className="flex gap-4">
+                      <div className="border-2 border-gray-400 rounded-full w-6 h-6 flex items-center justify-center">
+                        <img src={checkUrl} alt="check"/>
+                      </div>
+                      <div className="">
+                        {item.title}
+                      </div>
                     </div>
                     <button className="" onClick={()=>{ removeItem(item.id); }}>
-                      X
+                      <img src={crossUrl} alt="cross"/>
                     </button>
                   </div>
                 </SortableItem>
@@ -110,6 +117,27 @@ const Todos = () => {
             })}
           </SortableContext>
         </DndContext>
+      </div>
+
+      {/* Menu */}
+      <div className="flex w-full justify-between items-center">
+        <div className="">
+          items left 
+        </div>
+        <div className="flex gap-4">
+          <div className="">
+            All
+          </div>
+          <div className="">
+            Active
+          </div>
+          <div className="">
+            Completed
+          </div>
+        </div>
+        <div className="">
+          Clear Completed
+        </div>
       </div>
 
       {/* Info */}
