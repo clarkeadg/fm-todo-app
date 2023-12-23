@@ -27,6 +27,8 @@ This is a solution to the [Todo app challenge on Frontend Mentor](https://www.fr
 - [Tailwind](https://tailwindcss.com/) - For styles
 - [Vitest](https://vitest.dev/) - Testing framework
 - [React Testing Library](https://testing-library.com/docs/react-testing-library/intro/) - For tests
+- [Uniqid](https://www.npmjs.com/package/uniqid) - For generating unique ids
+- [React DnD Sortable](https://docs.dndkit.com/presets/sortable) - For sortable lists
 
 ## Getting Started
 

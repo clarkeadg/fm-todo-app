@@ -1,26 +1,65 @@
 import { useState } from 'react';
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import uniqid from 'uniqid';
+import SortableItem from './SortableItem';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 import './Todos.css';
 
 interface ITodo {
+  id: string,
   title: string
 }
 
 const Todos = () => {
-  const [value, setValue] = useState("");
-  const [items, setItems] = useState(Array<ITodo>);
+  const todos:ITodo[] = JSON.parse(localStorage.getItem("todos") || `[]`);  
+  
+  const [items, setItems] = useState(todos);
+  const [value, setValue] = useState("");  
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+    if (!over) return
+
+    const activeItem = items.find((item) => item.id === active.id)
+    const overItem = items.find((item) => item.id === over.id)
+
+    if (!activeItem || !overItem) {
+      return
+    }
+
+    const activeIndex = items.findIndex((item) => item.id === active.id)
+    const overIndex = items.findIndex((item) => item.id === over.id)
+
+    if (activeIndex !== overIndex) {
+      updateItems(arrayMove<ITodo>(items, activeIndex, overIndex))
+    }
+  }
+
+  const updateItems = (items:ITodo[]) => {
+    setItems(items);
+    localStorage.setItem("todos", JSON.stringify(items));
+  }
 
   const addItem = () => {
     if (!value) return;
-    setItems([{ title: value }, ...items]);
+    updateItems([{ id: uniqid(), title: value }, ...items]);
     setValue('');
   }
 
-  const removeItem = (id:number) => {
-    const newItems = items.filter((item, index)=> {
-      return id !== index
+  const removeItem = (id:string) => {
+    const newItems = items.filter((item)=> {
+      return id !== item.id
     })
-    setItems(newItems)
+    updateItems(newItems)
   }
 
   return (
@@ -46,22 +85,31 @@ const Todos = () => {
 
       {/* Todos List */}
       <div className="todos-list">
-        <ul>
-          { items.map((item, index) => {
-            return (
-              <li key={index}>
-                <div className="todos-item flex w-full items-center justify-between">
-                  <div className="">
-                    {item.title}
+        <DndContext 
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext 
+            items={items}
+            strategy={verticalListSortingStrategy}
+          >
+            { items.map((item, index) => {
+              return (
+                <SortableItem key={index} id={item.id}>
+                  <div className="todos-item flex w-full items-center justify-between">
+                    <div className="">
+                      {item.title}
+                    </div>
+                    <button className="" onClick={()=>{ removeItem(item.id); }}>
+                      X
+                    </button>
                   </div>
-                  <button className="" onClick={()=>{ removeItem(index); }}>
-                    X
-                  </button>
-                </div>
-              </li>
-            )
-          })}
-        </ul>
+                </SortableItem>
+              )
+            })}
+          </SortableContext>
+        </DndContext>
       </div>
 
       {/* Info */}
