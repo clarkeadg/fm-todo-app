@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import uniqid from 'uniqid';
@@ -10,14 +10,14 @@ import './Todos.css';
 
 interface ITodo {
   id: string,
-  title: string
+  title: string,
+  completed: boolean
 }
 
 const Todos = () => {
-  const todos:ITodo[] = JSON.parse(localStorage.getItem("todos") || `[]`);  
-  
-  const [items, setItems] = useState(todos);
-  const [value, setValue] = useState("");  
+  const [value, setValue] = useState("");
+  const [items, setItems] = useState(JSON.parse(localStorage.getItem("todos") || `[]`));
+  const [filter, setFilter] = useState(localStorage.getItem("filter") || `All`);    
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -53,7 +53,13 @@ const Todos = () => {
 
   const addItem = () => {
     if (!value) return;
-    updateItems([{ id: uniqid(), title: value }, ...items]);
+    
+    updateItems([{
+       id: uniqid(),
+       title: value,
+       completed: false
+    }, ...items]);
+
     setValue('');
   }
 
@@ -62,7 +68,40 @@ const Todos = () => {
       return id !== item.id
     })
     updateItems(newItems)
+  }  
+
+  const updateFilter = (filter:string) => {
+    setFilter(filter);
+    localStorage.setItem("filter", filter);
   }
+
+  const toggleCompleted = (id:string) => {
+    const newItems = items.map((item)=> {
+      if(item.id == id) {
+        item.completed = !item.completed
+      }
+      return item;
+    })
+    updateItems(newItems)
+  }
+
+  const clearCompleted = () => {
+    const newItems = items.filter((item)=> {
+      return !item.completed
+    })
+    updateItems(newItems)
+  }
+
+  const getNumberitemsLeft = () => {
+    return items.reduce((total:number, item:ITodo)=>{
+      if(!item.completed) total++;
+      return total;
+    }, 0)
+  }
+
+  const itemsLeft = useMemo(() => {
+    return getNumberitemsLeft();
+  }, [items]);
 
   return (
     <div className="todos w-[800px] max-w-full mx-auto">
@@ -96,15 +135,17 @@ const Todos = () => {
             items={items}
             strategy={verticalListSortingStrategy}
           >
-            { items.map((item, index) => {
+            { items.map((item:ITodo, index:number) => {
+              if (filter == "Active" && item.completed) return false;
+              if (filter == "Completed" && !item.completed) return false;
               return (
                 <SortableItem key={index} id={item.id}>
                   <div className="todos-item flex w-full items-center justify-between px-2">
                     <div className="flex gap-4">
-                      <div className="border-2 border-gray-400 rounded-full w-6 h-6 flex items-center justify-center">
-                        <img src={checkUrl} alt="check"/>
-                      </div>
-                      <div className="">
+                      <button onClick={()=>{ toggleCompleted(item.id); }} className="border-2 border-gray-400 rounded-full w-6 h-6 flex items-center justify-center">
+                        { item.completed && <img src={checkUrl} alt="check"/> }
+                      </button>
+                      <div className={`${item.completed ? "line-through" : ""}`}>
                         {item.title}
                       </div>
                     </div>
@@ -120,24 +161,24 @@ const Todos = () => {
       </div>
 
       {/* Menu */}
-      <div className="flex w-full justify-between items-center">
+      <div className="flex w-full justify-between items-center px-2 py-4">
         <div className="">
-          items left 
+          {`${itemsLeft} item${itemsLeft == 1 ? "" : "s"} left`}
         </div>
         <div className="flex gap-4">
-          <div className="">
+          <button className={`${filter == "All" ? "font-bold" : ""}`} onClick={()=>{ updateFilter('All'); }}>
             All
-          </div>
-          <div className="">
+          </button>
+          <button className={`${filter == "Active" ? "font-bold" : ""}`} onClick={()=>{ updateFilter('Active'); }}>
             Active
-          </div>
-          <div className="">
+          </button>
+          <button className={`${filter == "Completed" ? "font-bold" : ""}`} onClick={()=>{ updateFilter('Completed'); }}>
             Completed
-          </div>
+          </button>
         </div>
-        <div className="">
+        <button className="" onClick={clearCompleted}>
           Clear Completed
-        </div>
+        </button>
       </div>
 
       {/* Info */}
