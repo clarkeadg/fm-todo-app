@@ -31,15 +31,15 @@ const Todos = () => {
     const { active, over } = event
     if (!over) return
 
-    const activeItem = items.find((item) => item.id === active.id)
-    const overItem = items.find((item) => item.id === over.id)
+    const activeItem = items.find((item:ITodo) => item.id === active.id)
+    const overItem = items.find((item:ITodo) => item.id === over.id)
 
     if (!activeItem || !overItem) {
       return
     }
 
-    const activeIndex = items.findIndex((item) => item.id === active.id)
-    const overIndex = items.findIndex((item) => item.id === over.id)
+    const activeIndex = items.findIndex((item:ITodo) => item.id === active.id)
+    const overIndex = items.findIndex((item:ITodo) => item.id === over.id)
 
     if (activeIndex !== overIndex) {
       updateItems(arrayMove<ITodo>(items, activeIndex, overIndex))
@@ -64,7 +64,7 @@ const Todos = () => {
   }
 
   const removeItem = (id:string) => {
-    const newItems = items.filter((item)=> {
+    const newItems = items.filter((item:ITodo)=> {
       return id !== item.id
     })
     updateItems(newItems)
@@ -76,7 +76,7 @@ const Todos = () => {
   }
 
   const toggleCompleted = (id:string) => {
-    const newItems = items.map((item)=> {
+    const newItems = items.map((item:ITodo)=> {
       if(item.id == id) {
         item.completed = !item.completed
       }
@@ -86,7 +86,7 @@ const Todos = () => {
   }
 
   const clearCompleted = () => {
-    const newItems = items.filter((item)=> {
+    const newItems = items.filter((item:ITodo)=> {
       return !item.completed
     })
     updateItems(newItems)
