@@ -1,3 +1,4 @@
+import { memo } from 'react'
 
 const Attribution = () => {
   return (
@@ -8,4 +9,4 @@ const Attribution = () => {
   )
 }
 
-export default Attribution
+export default memo(Attribution)

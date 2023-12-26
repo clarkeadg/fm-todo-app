@@ -1,23 +1,26 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useEffect, useRef, useMemo, memo } from 'react';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import uniqid from 'uniqid';
-import SortableItem from './SortableItem';
+import TodoItem from './TodoItem';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
-import checkUrl from '../../assets/images/icon-check.svg';
-import crossUrl from '../../assets/images/icon-cross.svg';
 import './Todos.css';
 
-interface ITodo {
+type Todo = {
   id: string,
   title: string,
   completed: boolean
 }
 
 const Todos = () => {
-  const [value, setValue] = useState("");
+  const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const [items, setItems] = useState(JSON.parse(localStorage.getItem("todos") || `[]`));
-  const [filter, setFilter] = useState(localStorage.getItem("filter") || `All`);    
+  const [filter, setFilter] = useState(localStorage.getItem("filter") || `All`);
+  
+  useEffect(()=>{
+    localStorage.setItem("todos", JSON.stringify(items));
+    localStorage.setItem("filter", filter);
+  }, [items, filter])
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -31,76 +34,68 @@ const Todos = () => {
     const { active, over } = event
     if (!over) return
 
-    const activeItem = items.find((item:ITodo) => item.id === active.id)
-    const overItem = items.find((item:ITodo) => item.id === over.id)
+    const activeItem = items.find((item:Todo) => item.id === active.id)
+    const overItem = items.find((item:Todo) => item.id === over.id)
 
     if (!activeItem || !overItem) {
       return
     }
 
-    const activeIndex = items.findIndex((item:ITodo) => item.id === active.id)
-    const overIndex = items.findIndex((item:ITodo) => item.id === over.id)
+    const activeIndex = items.findIndex((item:Todo) => item.id === active.id)
+    const overIndex = items.findIndex((item:Todo) => item.id === over.id)
 
     if (activeIndex !== overIndex) {
-      updateItems(arrayMove<ITodo>(items, activeIndex, overIndex))
+      setItems((items:Todo[]) => arrayMove<Todo>(items, activeIndex, overIndex))
     }
   }
 
-  const updateItems = (items:ITodo[]) => {
-    setItems(items);
-    localStorage.setItem("todos", JSON.stringify(items));
+  const handleSubmit = (e:React.SyntheticEvent) => {
+    e.preventDefault();   
+    
+    if (inputRef.current.value) {
+      addItem(inputRef.current.value);
+      inputRef.current.value = "";
+    }   
   }
 
-  const addItem = () => {
-    if (!value) return;
-    
-    updateItems([{
-       id: uniqid(),
-       title: value,
-       completed: false
-    }, ...items]);
-
-    setValue('');
+  const addItem = (value:string) => {
+    const newTodo:Todo = {
+      id: uniqid(),
+      title: value,
+      completed: false
+    };    
+    setItems((items:Todo[]) => [...items, newTodo]);
   }
 
   const removeItem = (id:string) => {
-    const newItems = items.filter((item:ITodo)=> {
+    const newItems = items.filter((item:Todo)=> {
       return id !== item.id
     })
-    updateItems(newItems)
-  }  
-
-  const updateFilter = (filter:string) => {
-    setFilter(filter);
-    localStorage.setItem("filter", filter);
+    setItems(newItems)
   }
 
   const toggleCompleted = (id:string) => {
-    const newItems = items.map((item:ITodo)=> {
+    const newItems = items.map((item:Todo)=> {
       if(item.id == id) {
         item.completed = !item.completed
       }
       return item;
     })
-    updateItems(newItems)
+    setItems(newItems)
   }
 
   const clearCompleted = () => {
-    const newItems = items.filter((item:ITodo)=> {
+    const newItems = items.filter((item:Todo)=> {
       return !item.completed
     })
-    updateItems(newItems)
-  }
-
-  const getNumberitemsLeft = () => {
-    return items.reduce((total:number, item:ITodo)=>{
-      if(!item.completed) total++;
-      return total;
-    }, 0)
+    setItems(newItems)
   }
 
   const itemsLeft = useMemo(() => {
-    return getNumberitemsLeft();
+    return items.reduce((total:number, item:Todo)=>{
+      if(!item.completed) total++;
+      return total;
+    }, 0)
   }, [items]);
 
   return (
@@ -113,12 +108,11 @@ const Todos = () => {
       
       {/* Form */}
       <div className="mb-5">
-        <form onSubmit={(e)=>{ e.preventDefault(); addItem(); }}>
+        <form onSubmit={handleSubmit}>
           <input
+            ref={inputRef}
             className="px-4 py-3 w-full"
             type="text"
-            onChange={(e)=>{ setValue(e.target.value)}}
-            value={value}
             placeholder="Create a new todo..."
           />
         </form>
@@ -135,25 +129,17 @@ const Todos = () => {
             items={items}
             strategy={verticalListSortingStrategy}
           >
-            { items.map((item:ITodo, index:number) => {
+            { items.map((item:Todo, index:number) => {
               if (filter == "Active" && item.completed) return false;
               if (filter == "Completed" && !item.completed) return false;
               return (
-                <SortableItem key={index} id={item.id}>
-                  <div className="todos-item flex w-full items-center justify-between px-2">
-                    <div className="flex gap-4">
-                      <button onClick={()=>{ toggleCompleted(item.id); }} className="border-2 border-gray-400 rounded-full w-6 h-6 flex items-center justify-center">
-                        { item.completed && <img src={checkUrl} alt="check"/> }
-                      </button>
-                      <div className={`${item.completed ? "line-through" : ""}`}>
-                        {item.title}
-                      </div>
-                    </div>
-                    <button className="" onClick={()=>{ removeItem(item.id); }}>
-                      <img src={crossUrl} alt="cross"/>
-                    </button>
-                  </div>
-                </SortableItem>
+                <TodoItem 
+                  key={index}
+                  id={item.id}
+                  title={item.title}
+                  completed={item.completed}
+                  toggleCompleted={toggleCompleted}
+                  removeItem={removeItem} />
               )
             })}
           </SortableContext>
@@ -166,13 +152,13 @@ const Todos = () => {
           {`${itemsLeft} item${itemsLeft == 1 ? "" : "s"} left`}
         </div>
         <div className="flex gap-4">
-          <button className={`${filter == "All" ? "font-bold" : ""}`} onClick={()=>{ updateFilter('All'); }}>
+          <button className={`${filter == "All" ? "font-bold" : ""}`} onClick={()=>{ setFilter('All'); }}>
             All
           </button>
-          <button className={`${filter == "Active" ? "font-bold" : ""}`} onClick={()=>{ updateFilter('Active'); }}>
+          <button className={`${filter == "Active" ? "font-bold" : ""}`} onClick={()=>{ setFilter('Active'); }}>
             Active
           </button>
-          <button className={`${filter == "Completed" ? "font-bold" : ""}`} onClick={()=>{ updateFilter('Completed'); }}>
+          <button className={`${filter == "Completed" ? "font-bold" : ""}`} onClick={()=>{ setFilter('Completed'); }}>
             Completed
           </button>
         </div>
@@ -189,4 +175,4 @@ const Todos = () => {
   );
 }
 
-export default Todos;
+export default memo(Todos);

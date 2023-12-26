@@ -1,23 +1,17 @@
-import { useContext } from 'react';
-import ThemeContext from './ThemeContext'
-import './ThemeSwitcher.css'
+import { memo } from 'react';
+import { useThemeContext } from './ThemeContext'
 
 import moontIconUrl from '../../assets/images/icon-moon.svg';
 import sunIconUrl from '../../assets/images/icon-sun.svg';
 
 const ThemeSwitcher = () => {
-  const { theme, setTheme } = useContext(ThemeContext);
-
-  const changeTheme = (value:string) => {
-    setTheme(value);
-    localStorage.setItem("theme", value)
-  }
+  const { theme, setTheme } = useThemeContext();
 
   const toggleTheme = () => {
     if (theme == "light") {
-      changeTheme('dark');
+      setTheme('dark');
     } else {
-      changeTheme('light');
+      setTheme('light');
     }    
   }
 
@@ -28,4 +22,4 @@ const ThemeSwitcher = () => {
   );
 }
 
-export default ThemeSwitcher;
+export default memo(ThemeSwitcher);
