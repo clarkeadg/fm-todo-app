@@ -99,27 +99,35 @@ const Todos = () => {
   }, [items]);
 
   return (
-    <div className="todos w-[800px] max-w-full mx-auto">
+    <div className="todos w-[540px] max-w-full mx-auto">
       {/* Title */}
-      <div className="flex w-full items-center justify-between mb-5">
-        <h1 className="text-4xl tracking-widest font-bold uppercase text-white">Todo</h1>
-        <ThemeSwitcher/>
+      <div className="flex w-full justify-between items-center mb-[20px] md:mb-[30px]">
+        <h1 className="text-[28px] tracking-[10px] md:text-[40px] md:tracking-[15px] font-bold uppercase text-white">Todo</h1>
+        <div className="">
+          <ThemeSwitcher/>
+        </div>
       </div>
       
       {/* Form */}
-      <div className="mb-5">
-        <form onSubmit={handleSubmit}>
-          <input
-            ref={inputRef}
-            className="px-4 py-3 w-full"
-            type="text"
-            placeholder="Create a new todo..."
-          />
+      <div className="todos-form bg-white rounded overflow-hidden px-4 md:px-5 mb-[15px] md:mb-[25px]">
+        <form onSubmit={handleSubmit} className="flex items-center gap-2 md:gap-4">
+          <span>
+            <div className="border-2 border-gray-400 rounded-full w-5 h-5 md:w-6 md:h-6"/>
+          </span>
+          <span>
+            <input
+              ref={inputRef}
+              className="text-xs md:text-[18px] leading-none px-2 py-4 md:py-5 w-full focus:outline-none mt-[2px]"
+              type="text"
+              placeholder="Create a new todo..."
+            />
+          </span>
         </form>
       </div>
 
       {/* List */}
-      <div className="todos-list">
+      <div className="todos-list bg-white rounded shadow-lg mb-4 md:mb-10">
+        {/* Sortable */}
         <DndContext 
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -144,13 +152,31 @@ const Todos = () => {
             })}
           </SortableContext>
         </DndContext>
+
+        {/* Menu */}
+        <div className="flex w-full justify-between items-center px-5 py-4 text-sm">
+          <div className="text-xs">
+            {`${itemsLeft} item${itemsLeft == 1 ? "" : "s"} left`}
+          </div>
+          <div className="hidden md:flex gap-4 ml-8">
+            <button className={`${filter == "All" ? "font-bold" : ""}`} onClick={()=>{ setFilter('All'); }}>
+              All
+            </button>
+            <button className={`${filter == "Active" ? "font-bold" : ""}`} onClick={()=>{ setFilter('Active'); }}>
+              Active
+            </button>
+            <button className={`${filter == "Completed" ? "font-bold" : ""}`} onClick={()=>{ setFilter('Completed'); }}>
+              Completed
+            </button>
+          </div>
+          <button className="text-xs" onClick={clearCompleted}>
+            Clear Completed
+          </button>
+        </div>
       </div>
 
       {/* Menu */}
-      <div className="flex w-full justify-between items-center px-2 py-4">
-        <div className="">
-          {`${itemsLeft} item${itemsLeft == 1 ? "" : "s"} left`}
-        </div>
+      <div className="flex md:hidden w-full bg-white shadow-lg rounded justify-center items-center px-5 py-3 text-sm mb-9">
         <div className="flex gap-4">
           <button className={`${filter == "All" ? "font-bold" : ""}`} onClick={()=>{ setFilter('All'); }}>
             All
@@ -162,13 +188,10 @@ const Todos = () => {
             Completed
           </button>
         </div>
-        <button className="" onClick={clearCompleted}>
-          Clear Completed
-        </button>
-      </div>
+      </div> 
 
       {/* Info */}
-      <div className="text-sm text-center">
+      <div className="text-xs text-center">
         Drag and drop to reorder list
       </div>
     </div>
