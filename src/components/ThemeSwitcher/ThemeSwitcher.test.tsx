@@ -14,18 +14,18 @@ describe('Renders ThemeSwitcher component correctly', async () => {
       <ThemeSwitcher/>
     </ThemeContextProvider>
   );
-  
-  it('Should have a sun icon', async () => {  
-    fireEvent.click(screen.getByTestId('theme-switcher'));
-
-    const buttonImage = container.querySelector(`.theme-switcher img[src="${sunIconUrl}"]`);
-    expect(buttonImage).not.toBeNull();
-  });
 
   it('Should have a moon icon', async () => {  
     fireEvent.click(screen.getByTestId('theme-switcher'));
 
     const buttonImage = container.querySelector(`.theme-switcher img[src="${moontIconUrl}"]`);
+    expect(buttonImage).not.toBeNull();
+  });
+
+  it('Should have a sun icon', async () => {  
+    fireEvent.click(screen.getByTestId('theme-switcher'));
+
+    const buttonImage = container.querySelector(`.theme-switcher img[src="${sunIconUrl}"]`);
     expect(buttonImage).not.toBeNull();
   });
 

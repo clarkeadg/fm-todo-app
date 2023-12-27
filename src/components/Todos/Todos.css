@@ -1,4 +1,12 @@
+.todos-item.completed .toggle-completed-inner {
+  background: linear-gradient(135deg, var(--color-check-bg), var(--color-check-bg2));
+}
 .todos-item.completed .toggle-completed {
+  background: linear-gradient(135deg, var(--color-check-bg), var(--color-check-bg2));
+}
+.todos-item .toggle-completed { background: #e5e7eb; }
+.todos-item .toggle-completed-inner { background: #fff; }
+.todos-item .toggle-completed:hover {
   background: linear-gradient(135deg, var(--color-check-bg), var(--color-check-bg2));
 }
 
@@ -11,8 +19,19 @@
 .dark .todos-form { background: var(--dark-theme-very-dark-desaturated-blue); }
 .dark .todos-form input { color: var(--dark-theme-light-grayish-blue); background: var(--dark-theme-very-dark-desaturated-blue); }
 .dark .todos-list { background: var(--dark-theme-very-dark-desaturated-blue); }
-.dark .todos-item { color: var(--dark-theme-light-grayish-blue); border-color: var(--dark-theme-very-dark-grayish-blue); }
+.dark .todos-item { color: var(--dark-theme-light-grayish-blue); border-color: var(--dark-theme-extra-dark-grayish-blue); }
 .dark .todos-item.completed { color: var(--dark-theme-dark-grayish-blue); }
-.dark .toggle-completed { border-color: var(--dark-theme-very-dark-grayish-blue); }
+.dark .toggle-completed { border-color: var(--dark-theme-extra-dark-grayish-blue); }
 .dark .todos-menu { color: var(--dark-theme-dark-grayish-blue); background: var(--dark-theme-very-dark-desaturated-blue); }
 .dark .todos-info { color: var(--dark-theme-dark-grayish-blue); }
+.dark .todos-item .toggle-completed { background: var(--dark-theme-extra-dark-grayish-blue); }
+.dark .todos-item .toggle-completed-inner { background: var(--dark-theme-very-dark-desaturated-blue);}
+.dark .todos-item .toggle-completed:hover {
+  background: linear-gradient(135deg, var(--color-check-bg), var(--color-check-bg2));
+}
+.dark .todos-item.completed .toggle-completed-inner {
+  background: linear-gradient(135deg, var(--color-check-bg), var(--color-check-bg2));
+}
+.dark .todos-item.completed .toggle-completed {
+  background: linear-gradient(135deg, var(--color-check-bg), var(--color-check-bg2));
+}

@@ -14,18 +14,18 @@ describe('Renders Layout component correctly', async () => {
       </Layout>
     </ThemeContextProvider>
   );
-  
-  it('Should have dark class', async () => {  
-    fireEvent.click(screen.getByTestId('theme-switcher'));
-
-    const main = container.querySelector('main.dark');
-    expect(main).not.toBeNull();
-  });
 
   it('Should have light class', async () => {  
     fireEvent.click(screen.getByTestId('theme-switcher'));
 
     const main = container.querySelector('main.light');
+    expect(main).not.toBeNull();
+  });
+
+  it('Should have dark class', async () => {  
+    fireEvent.click(screen.getByTestId('theme-switcher'));
+
+    const main = container.querySelector('main.dark');
     expect(main).not.toBeNull();
   });
 

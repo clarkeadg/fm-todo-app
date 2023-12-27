@@ -6,15 +6,19 @@ import TodoItem from './TodoItem';
 import ThemeSwitcher from '../ThemeSwitcher/ThemeSwitcher';
 import './Todos.css';
 
+type TodosProps = {
+  initialItems?: Todo[]
+}
+
 type Todo = {
   id: string,
   title: string,
   completed: boolean
 }
 
-const Todos = () => {
+const Todos = ({ initialItems=[] }: TodosProps) => {
   const inputRef = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const [items, setItems] = useState(JSON.parse(localStorage.getItem("todos") || `[]`));
+  const [items, setItems] = useState(localStorage.getItem("todos") ? JSON.parse(localStorage.getItem("todos") || `[]`): initialItems);
   const [filter, setFilter] = useState(localStorage.getItem("filter") || `All`);
   
   useEffect(()=>{
