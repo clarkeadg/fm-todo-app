@@ -18,15 +18,15 @@ describe('Renders ThemeSwitcher component correctly', async () => {
   it('Should have a sun icon', async () => {  
     fireEvent.click(screen.getByTestId('theme-switcher'));
 
-    const buttonImage = container.querySelector('.theme-switcher img');
-    expect(buttonImage.src).to.equal('http://localhost:3000'+sunIconUrl);
+    const buttonImage:HTMLImageElement = container.querySelector('.theme-switcher img');
+    expect(buttonImage && buttonImage.src).to.equal('http://localhost:3000'+sunIconUrl);
   });
 
   it('Should have a moon icon', async () => {  
     fireEvent.click(screen.getByTestId('theme-switcher'));
 
-    const buttonImage = container.querySelector('.theme-switcher img');
-    expect(buttonImage.src).to.equal('http://localhost:3000'+moontIconUrl);
+    const buttonImage:HTMLImageElement = container.querySelector('.theme-switcher img');
+    expect(buttonImage && buttonImage.src).to.equal('http://localhost:3000'+moontIconUrl);
   });
 
 });
