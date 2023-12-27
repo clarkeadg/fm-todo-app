@@ -114,7 +114,7 @@ const Todos = () => {
           <div>
             <div className="toggle-completed border-2 rounded-full w-5 h-5 md:w-6 md:h-6"/>
           </div>
-          <span>
+          <div className="flex grow">
             <input
               ref={inputRef}
               className="text-xs md:text-[18px] leading-none px-2 py-4 md:py-5 w-full focus:outline-none mt-[2px]"
@@ -122,7 +122,7 @@ const Todos = () => {
               placeholder="Create a new todo..."
               data-testid="todos-input"
             />
-          </span>
+          </div>
         </form>
       </div>
 
