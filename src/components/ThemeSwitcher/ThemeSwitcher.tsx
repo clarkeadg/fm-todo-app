@@ -16,7 +16,7 @@ const ThemeSwitcher = () => {
   }
 
   return (
-    <button onClick={toggleTheme} className="theme-switcher">
+    <button data-testid="theme-switcher" onClick={toggleTheme} className="theme-switcher">
       <img src={theme == 'dark' ? sunIconUrl : moontIconUrl} alt="theme icon" />
     </button>
   );

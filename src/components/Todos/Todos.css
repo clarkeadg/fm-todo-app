@@ -9,7 +9,7 @@
 .todos-menu .font-bold { color: var(--color-bright-blue); }
 
 .dark .todos-form { background: var(--dark-theme-very-dark-desaturated-blue); }
-.dark .todos-form input { background: var(--dark-theme-very-dark-desaturated-blue); }
+.dark .todos-form input { color: var(--dark-theme-light-grayish-blue); background: var(--dark-theme-very-dark-desaturated-blue); }
 .dark .todos-list { background: var(--dark-theme-very-dark-desaturated-blue); }
 .dark .todos-item { color: var(--dark-theme-light-grayish-blue); border-color: var(--dark-theme-very-dark-grayish-blue); }
 .dark .todos-item.completed { color: var(--dark-theme-dark-grayish-blue); }

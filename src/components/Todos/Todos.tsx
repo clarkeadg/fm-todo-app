@@ -110,7 +110,7 @@ const Todos = () => {
       
       {/* Form */}
       <div className="todos-form rounded overflow-hidden px-4 md:px-5 mb-[15px] md:mb-[25px]">
-        <form onSubmit={handleSubmit} className="flex items-center gap-2 md:gap-4">
+        <form onSubmit={handleSubmit} data-testid="todos-form" className="flex items-center gap-2 md:gap-4">
           <span>
             <div className="toggle-completed border-2 rounded-full w-5 h-5 md:w-6 md:h-6"/>
           </span>
@@ -120,6 +120,7 @@ const Todos = () => {
               className="text-xs md:text-[18px] leading-none px-2 py-4 md:py-5 w-full focus:outline-none mt-[2px]"
               type="text"
               placeholder="Create a new todo..."
+              data-testid="todos-input"
             />
           </span>
         </form>
