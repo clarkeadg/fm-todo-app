@@ -1,1 +1,18 @@
-.todos {}
+.todos-item.completed .toggle-completed {
+  background: linear-gradient(135deg, var(--color-check-bg), var(--color-check-bg2));
+}
+
+.todos-form { background: #fff; }
+.todos-list { background: #fff; }
+.todos-item.completed { color: var(--light-theme-light-grayish-blue); }
+.todos-menu { background: #fff; }
+.todos-menu .font-bold { color: var(--color-bright-blue); }
+
+.dark .todos-form { background: var(--dark-theme-very-dark-desaturated-blue); }
+.dark .todos-form input { background: var(--dark-theme-very-dark-desaturated-blue); }
+.dark .todos-list { background: var(--dark-theme-very-dark-desaturated-blue); }
+.dark .todos-item { color: var(--dark-theme-light-grayish-blue); border-color: var(--dark-theme-very-dark-grayish-blue); }
+.dark .todos-item.completed { color: var(--dark-theme-dark-grayish-blue); }
+.dark .toggle-completed { border-color: var(--dark-theme-very-dark-grayish-blue); }
+.dark .todos-menu { color: var(--dark-theme-dark-grayish-blue); background: var(--dark-theme-very-dark-desaturated-blue); }
+.dark .todos-info { color: var(--dark-theme-dark-grayish-blue); }

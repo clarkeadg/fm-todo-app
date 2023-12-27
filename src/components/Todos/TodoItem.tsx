@@ -28,10 +28,10 @@ const TodoItem = ({ id, title, completed, toggleCompleted, removeItem }:TodoItem
   
   return (
     <div ref={setNodeRef} style={style}>
-      <div className="todos-item flex w-full items-center justify-between px-4 py-[16px] md:px-5 md:py-4 border-b border-gray-400">
+      <div className={`todos-item ${completed ? "completed" : ""} flex w-full items-center justify-between px-4 py-[16px] md:px-5 md:py-4 border-b`}>
         <div className="flex grow items-center gap-4 md:gap-6">
           <span>
-            <button onClick={()=>{ toggleCompleted(id); }} className="border-2 border-gray-400 rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center">
+            <button onClick={()=>{ toggleCompleted(id); }} className="toggle-completed border-2 rounded-full w-5 h-5 md:w-6 md:h-6 flex items-center justify-center">
               { completed && <img src={checkUrl} alt="check"/> }
             </button>
           </span>

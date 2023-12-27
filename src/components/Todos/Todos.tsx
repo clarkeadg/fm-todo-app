@@ -109,10 +109,10 @@ const Todos = () => {
       </div>
       
       {/* Form */}
-      <div className="todos-form bg-white rounded overflow-hidden px-4 md:px-5 mb-[15px] md:mb-[25px]">
+      <div className="todos-form rounded overflow-hidden px-4 md:px-5 mb-[15px] md:mb-[25px]">
         <form onSubmit={handleSubmit} className="flex items-center gap-2 md:gap-4">
           <span>
-            <div className="border-2 border-gray-400 rounded-full w-5 h-5 md:w-6 md:h-6"/>
+            <div className="toggle-completed border-2 rounded-full w-5 h-5 md:w-6 md:h-6"/>
           </span>
           <span>
             <input
@@ -126,7 +126,7 @@ const Todos = () => {
       </div>
 
       {/* List */}
-      <div className="todos-list bg-white rounded shadow-lg mb-4 md:mb-10">
+      <div className="todos-list rounded overflow-hidden shadow-lg mb-4 md:mb-10">
         {/* Sortable */}
         <DndContext 
           sensors={sensors}
@@ -154,7 +154,7 @@ const Todos = () => {
         </DndContext>
 
         {/* Menu */}
-        <div className="flex w-full justify-between items-center px-5 py-4 text-sm">
+        <div className="todos-menu flex w-full justify-between items-center px-5 py-4 text-sm">
           <div className="text-xs">
             {`${itemsLeft} item${itemsLeft == 1 ? "" : "s"} left`}
           </div>
@@ -176,7 +176,7 @@ const Todos = () => {
       </div>
 
       {/* Menu */}
-      <div className="flex md:hidden w-full bg-white shadow-lg rounded justify-center items-center px-5 py-3 text-sm mb-9">
+      <div className="todos-menu flex md:hidden w-full shadow-lg rounded justify-center items-center px-5 py-3 text-sm mb-9">
         <div className="flex gap-4">
           <button className={`${filter == "All" ? "font-bold" : ""}`} onClick={()=>{ setFilter('All'); }}>
             All
@@ -191,7 +191,7 @@ const Todos = () => {
       </div> 
 
       {/* Info */}
-      <div className="text-xs text-center">
+      <div className="todos-info text-xs text-center">
         Drag and drop to reorder list
       </div>
     </div>
