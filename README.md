@@ -8,6 +8,7 @@ This is a solution to the [Todo app challenge on Frontend Mentor](https://www.fr
   - [Screenshot](#screenshot)
   - [Links](#links)
 - [Built with](#built-with)
+- [Getting Started](#getting-started)
 - [Author](#author)
 
 ## Overview
